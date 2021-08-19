@@ -1,5 +1,6 @@
+
 " --------------------------------------------------------------------
-""	Plugins							     ""
+""	Plugins
 " --------------------------------------------------------------------
 
 
@@ -13,30 +14,44 @@ filetype on                 " filetype must be 'on' before setting it 'off'
                             "   otherwise it exits with a bad status and breaks
                             "   git commit.
 filetype off                " force reloading *after* pathogen loaded
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-call vundle#begin(expand('~/.vim/bundle'))
+" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-fugitive' "Premier vim plugin for GIT
+Plugin 'rakr/vim-one'                  " vim-one color theme
+Plugin 'scrooloose/nerdtree'           " side bar file tree
+Plugin 'itchyny/lightline.vim'         " minmal status bar
+Plugin 'tpope/vim-fugitive'            " allows git commands in vim session
+Plugin 'airblade/vim-gitgutter'        " shows git changes in gutter
+Plugin 'easymotion/vim-easymotion'     " go to any word quickly '\\w', '\\e', '\\b'
+Plugin 'KKPMW/vim-sendtowindow'        " send commands to REPL
+Plugin 'yuttie/comfortable-motion.vim' " scrolling 'C-d' or 'C-u'
+Plugin 'ncm2/ncm2'                     " completion [dep]: nvim-0.2.2, nvim-yarp, python3
+Plugin 'roxma/nvim-yarp'               " remote plugin framework required for ncm2
+Plugin 'ncm2/ncm2-bufword'             " complete words in buffer
+Plugin 'ncm2/ncm2-path'                " complete paths
+Plugin 'ncm2/ncm2-jedi'                " Python completion
+Plugin 'gaalcaras/ncm-R'               " R completion [dep]: ncm2, Nvim-R
+Plugin 'jalvesaq/Nvim-R'               " required for ncm-R
+Plugin 'dense-analysis/ale'            " linting [dep]: pip3 install flake8, install.packages('lintr')
+Plugin 'fisadev/vim-isort'             " Python sort imports [dep]: pip3 install isort
+Plugin 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plugin 'tpope/vim-surround'            " replace surrounding characters
+Plugin 'filipekiss/ncm2-look.vim'      " ncm2 spelling
+Plugin 'JuliaEditorSupport/julia-vim'  " julia syntax highlighting
+Plugin 'tmhedberg/SimpylFold'          " Code folding (zo: open, zc: close)
+Plugin 'rust-lang/rust.vim'            " Rust format
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'tpope/vim-surround'
-Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'  "Checking Syntax errors
-Plugin 'airblade/vim-gitgutter'  " Vim plugin which shows a git ines have been added, modified, or removed.
-Plugin 'vim-airline/vim-airline' "Setting up my status
 Plugin 'tpope/vim-commentary'  "Insering comment with gcc command
-Plugin 'dense-analysis/ale'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'itchyny/lightline.vim' "A light and configurable statusline/tabline plugin for Vim
-Plugin 'morhetz/gruvbox' "Theme
 Plugin 'ap/vim-css-color' "Displays a preview of color
 Plugin 'junegunn/goyo.vim' "Simple writing theme that
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'alvan/vim-closetag'
-Plugin 'vifm/vifm.vim'
 Plugin 'arcticicestudio/nord-vim'
 Plugin 'chun-yang/auto-pairs'
 Plugin 'junegunn/vim-github-dashboard'
@@ -63,8 +78,144 @@ Plugin 'folke/lsp-colors.nvim'
 Plugin 'nvim-lua/completion-nvim'
 Plugin 'shougo/defx.nvim', { 'do': ':TSUpdate'}
 Plugin 'danilamihailov/beacon.nvim'
+Plugin 'colepeters/spacemacs-theme.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'norcalli/nvim-colorizer.lua'
 
-call vundle#end()            " required
+" required for vundle
+call vundle#end()
+
+"Airlines
+let g:airline_powerline_fonts = 1
+
+
+" ncm2-loom
+let g:ncm2_look_enabled = 0
+
+" turn on spelling and make a spell file
+set spelllang=en_us
+set spellfile=~/.config/nvim/en.utf-8.add
+
+" startify
+"#let g:startify_lists = [
+"#      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+"#      \ { 'type': 'files',     'header': ['   Recent']            },
+"#      \ { 'type': 'commands',  'header': ['   Commands']       },
+"#      \ ]
+
+" markdown-preview.nvim
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = ''
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1
+    \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
+
+" vim-isort
+let g:vim_isort_map = '<C-i>'
+
+" Ale Linting
+let g:ale_sign_column_always=1
+let g:ale_lint_on_enter=1
+let g:ale_lint_on_text_changed='always'
+let g:ale_echo_msg_error_str='E'
+let g:ale_echo_msg_warning_str='W'
+let g:ale_echo_msg_format='[%linter%] %s [%severity%]: [%...code...%]'
+let g:ale_linters={'python': ['flake8'], 'r': ['lintr']}
+let g:ale_fixers={'python': ['black']}
+
+" lightline
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
+
+" ncm2
+autocmd BufEnter * call ncm2#enable_for_buffer()      " enable ncm2 for all buffers
+set completeopt=noinsert,menuone,noselect             " IMPORTANT: :help Ncm2PopupOpen for more information
+let g:python3_host_prog='/usr/bin/python3'            " ncm2-jedi
+
+
+" gitgutter
+let g:gitgutter_async=0
+
+" nerdtree settings
+"map <C-n> :NERDTreeToggle<CR>
+"let NERDTreeIgnore = ['\.pyc$']  " ignore pyc files
+
+" Theme settings
+colorscheme spacemacs-theme                  " use vim-one colorscheme
+set background=dark              " [dark or light]
+set termguicolors                " fg and bg highlighting requires compatible terminal colors
+
+" Window Splits
+set splitbelow splitright
+" Remap splits navigation to just CTRL + hjkl
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+" Make adjusing split sizes a bit more friendly
+noremap <silent> <C-Left> :vertical resize +3<CR>
+noremap <silent> <C-Right> :vertical resize -3<CR>
+noremap <silent> <C-Up> :resize -3<CR>
+noremap <silent> <C-Down> :resize +3<CR>
+" Change 2 split windows from vert to horiz or horiz to vert
+map <Leader>th <C-w>t<C-w>H
+map <Leader>tk <C-w>t<C-w>K
+" Start terminals for R and Python sessions '\tr' or '\tp'
+map <Leader>tr :new term://bash<CR>iR<CR><C-\><C-n><C-w>k
+map <Leader>tp :new term://bash<CR>ipython3<CR><C-\><C-n><C-w>k
+map <Leader>td :new term://bash<CR>isqlite3<CR><C-\><C-n><C-w>k
+map <Leader>tj :new term://bash<CR>ijulia<CR><C-\><C-n><C-w>k
+map <Leader>ts :new term://bash<CR>iscala<CR><C-\><C-n><C-w>k
+
+" General Settings
+"set number                      " set line numbers
+"set noswapfile                  " no swap
+"set clipboard=unnamedplus       " Copy/paste between vim and other programs. '"+y' then middlemouse
+" tabs and spaces
+"set expandtab                   " Use spaces instead of tabs.
+"set smarttab                    " Uses shiftwidth and tabstap to insert blanks when <Tab>
+"set shiftwidth=2                " One tab == four spaces.
+"set tabstop=2                   " One tab == four spaces.<Paste>
+
+" remap
+:imap ii <Esc>
+" python alias (,p runs python on script. ,t times python script)
+nmap ,p :w<CR>:!python3 %<CR>
+nmap ,t :w<CR>:!time python3 %<CR>
+" SQLite should use SQL highlights. See :help ft-sql for more info
+autocmd BufNewFile,BufRead *.sqlite set syntax=sql
+
+"No Highlight search
+nmap ,n :w<CR>:nohlsearch<CR>
+
+"Source File
+nmap ,s :w<CR>:source %<CR>
 
 " -----------------------------------------------------------------
 "		Leader Key
@@ -75,7 +226,7 @@ syntax on "Turning Syntax on
 filetype plugin indent on   " enable detection, plugins and indent
 
 set spell spelllang=en_us
-set encoding=utf-8 nobomb   " BOM often causes trouble, UTF-8 is awsum.
+set encoding=UTF-8          " BOM often causes trouble, UTF-8 is awsum.
 
 " --- performance / buffer ---
 set hidden                  " can put buffer to the background without writing
@@ -180,6 +331,7 @@ set tabstop=4                   " Tab is # spaces
 set shiftwidth=4                " The # of spaces for indenting.
 set smarttab                    " At start of line, <Tab> inserts shift width
                                 "   spaces, <Bs> deletes shift width spaces.
+set updatetime=100              " set update time for gitgutter update
 
 set wrap                        " wrap lines
 set textwidth=120
@@ -230,6 +382,7 @@ autocmd InsertEnter * norm zz
 autocmd BufWritePre * %s/\s\+$//e
 set termguicolors
 set shortmess+=c
+set guifont=DroidSansMono\ Nerd\ Font\ 11
 
 " Local dirs (centralize everything)
 set backupdir=~/.vim/backups
@@ -254,18 +407,18 @@ hi link OverLength Error
 " --- UI settings ---
 
 " true color
-if exists("&termguicolors") && exists("&winblend")
-  syntax enable
-  set termguicolors
-  set winblend=0
-  set wildoptions=pum
-  set pumblend=5
-  set background=dark
+"if exists("&termguicolors") && exists("&winblend")
+ " syntax enable
+  "set termguicolors
+  "set winblend=0
+  "set wildoptions=pum
+  "set pumblend=5
+  "set background=dark
   " Use NeoSolarized
   "let g:neosolarized_termtrans=1
-  runtime ./colors/nord.vim
-  colorscheme nord
-endif
+  "runtime ./colors/nord.vim
+  "colorscheme nord
+"endif
 
 " --- FIX/IMPROVE DEFAULT BEHAVIOR ---
 
@@ -277,15 +430,15 @@ command! Bd bd
 " -------------------------------------------------------------
 "Shutcut split Navigation
 
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" map <C-h> <C-w>h
+" map <C-j> <C-w>j
+" map <C-k> <C-w>k
+"map <C-l> <C-w>l
 
-map <Space> :EditVifm .<CR>
+"map <Space> :EditVifm .<CR>
 map <ENTER> :Goyo<CR>
 
-map <Leader>l :!python %<cr>
+"map <Leader>l :!python %<cr>
 
 " ------------------------------------------------------------
 "Shutcut split opening
@@ -339,16 +492,16 @@ nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
 " Bubble single lines, similar to Eclipse (requires unimpaired.vim)
-nmap <C-Up> [e
-nmap <C-Down> ]e
+"nmap <C-Up> [e
+"nmap <C-Down> ]e
 
 " Bubble multiple lines, similar to Eclipse (requires unimpaired.vim)
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
+"vmap <C-Up> [egv
+"vmap <C-Down> ]egv
 
 " Duplicate lines, similar to Eclipse
-noremap <C-S-Up> YP
-noremap <C-S-Down> YP
+" noremap <C-S-Up> YP
+" noremap <C-S-Down> YP
 
 " close window
 noremap <leader>q :clo<CR>
@@ -362,9 +515,9 @@ let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
+let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir = "~/.vim/ultisnips"
-let g:UltiSnipsEditSplit = "vertical"
+"let g:UltiSnipsEditSplit = ":vertical
 
 
 "Open UltiSnips edit function
@@ -534,7 +687,7 @@ nnoremap <Leader>' :lua require'telescope.builtin'.marks{}<CR>
 nnoremap <Leader>g :lua require'telescope.builtin'.git_files{}<CR>
 
 " all files
-nnoremap <Leader>f :lua require'telescope.builtin'.find_files{}<CR>
+nnoremap <Space> :lua require'telescope.builtin'.find_files{}<CR>
 
 " ripgrep like grep through dir
 nnoremap <Leader>rg :lua require'telescope.builtin'.live_grep{}<CR>
@@ -566,7 +719,7 @@ nnoremap <silent> gD    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> K     <cmd>Lspsaga hover_doc<CR>
-nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <C-[> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <C-p> <cmd>Lspsaga diagnostic_jump_prev<CR>
 nnoremap <silent> <C-n> <cmd>Lspsaga diagnostic_jump_next<CR>
 nnoremap <silent> gf    <cmd>lua vim.lsp.buf.formatting()<CR>
@@ -583,6 +736,23 @@ require("statusbar")
 require("completion")
 EOF
 
+lua require'colorizer'.setup()
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "javascript" }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust" },  -- list of language that will be disabled
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
 
 
 " -----------------------------------------------------------------------------
