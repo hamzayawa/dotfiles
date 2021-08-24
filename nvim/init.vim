@@ -1,5 +1,13 @@
 
-" --------------------------------------------------------------------
+"..............................................
+"..............................................
+"\ \ / /_ ___      ____ |_   _|__  ___| |__ ...
+" \ V / _` \ \ /\ / / _` || |/ _ \/ __| '_ \ ..
+"  | | (_| |\ V  V / (_| || |  __/ (__| | | |..
+"  |_|\__,_| \_/\_/ \__,_||_|\___|\___|_| |_|..
+"..............................................
+"..............................................
+"--------------------------------------------------------------------
 ""	Plugins
 " --------------------------------------------------------------------
 
@@ -8,12 +16,12 @@
 " BEHAVIOR
 " -----------------------------------------------------------------------------
 
-set nocompatible            " Disable vi compatibility
+set nocompatible                        " Disable vi compatibility
 
-filetype on                 " filetype must be 'on' before setting it 'off'
-                            "   otherwise it exits with a bad status and breaks
-                            "   git commit.
-filetype off                " force reloading *after* pathogen loaded
+filetype on                             " filetype must be 'on' before setting it 'off'
+                                        "   otherwise it exits with a bad status and breaks
+                                        "   git commit.
+filetype off                            " force reloading *after* pathogen loaded
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -44,11 +52,11 @@ Plugin 'JuliaEditorSupport/julia-vim'  " julia syntax highlighting
 Plugin 'tmhedberg/SimpylFold'          " Code folding (zo: open, zc: close)
 Plugin 'rust-lang/rust.vim'            " Rust format
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'scrooloose/syntastic'  "Checking Syntax errors
-Plugin 'tpope/vim-commentary'  "Insering comment with gcc command
+Plugin 'scrooloose/syntastic'          "Checking Syntax errors
+Plugin 'tpope/vim-commentary'          "Insering comment with gcc command
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'ap/vim-css-color' "Displays a preview of color
-Plugin 'junegunn/goyo.vim' "Simple writing theme that
+Plugin 'ap/vim-css-color'              "Displays a preview of color
+Plugin 'junegunn/goyo.vim'             "Simple writing theme that
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'alvan/vim-closetag'
@@ -68,7 +76,7 @@ Plugin 'hrsh7th/nvim-compe'
 Plugin 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plugin 'nvim-treesitter/nvim-treesitter-textobjects'
 Plugin 'glepnir/galaxyline.nvim', { 'branch': 'main' }
-Plugin 'kyazdani42/nvim-web-devicons'  " needed for galaxyline icons
+Plugin 'kyazdani42/nvim-web-devicons'      " needed for galaxyline icons
 Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'nikvdp/neomux'
 Plugin 'hoob3rt/lualine.nvim'
@@ -82,6 +90,17 @@ Plugin 'colepeters/spacemacs-theme.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'norcalli/nvim-colorizer.lua'
+Plugin 'junegunn/vim-emoji'
+Plugin 'bps/vim-textobj-python'
+Plugin 'FooSoft/vim-argwrap'
+Plugin 'gerw/vim-HiLinkTrace'
+Plugin 'kana/vim-textobj-user'
+Plugin 'wmvanvliet/python-syntax'
+Plugin 'wmvanvliet/vim-blackboard'
+Plugin 'wmvanvliet/jupyter-vim'
+Plugin 'wmvanvliet/vim-kerbulator'
+Plugin 'Vimjas/vim-python-pep8-indent'
+Plugin 'ervandew/supertab'
 
 " required for vundle
 call vundle#end()
@@ -153,19 +172,6 @@ let g:lightline = {
       \ },
       \ }
 
-" ncm2
-autocmd BufEnter * call ncm2#enable_for_buffer()      " enable ncm2 for all buffers
-set completeopt=noinsert,menuone,noselect             " IMPORTANT: :help Ncm2PopupOpen for more information
-let g:python3_host_prog='/usr/bin/python3'            " ncm2-jedi
-
-
-" gitgutter
-let g:gitgutter_async=0
-
-" nerdtree settings
-"map <C-n> :NERDTreeToggle<CR>
-"let NERDTreeIgnore = ['\.pyc$']  " ignore pyc files
-
 " Theme settings
 colorscheme spacemacs-theme                  " use vim-one colorscheme
 set background=dark              " [dark or light]
@@ -176,7 +182,7 @@ set splitbelow splitright
 " Remap splits navigation to just CTRL + hjkl
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
+nnoremap <leader>k <C-w>k
 nnoremap <C-l> <C-w>l
 " Make adjusing split sizes a bit more friendly
 noremap <silent> <C-Left> :vertical resize +3<CR>
@@ -419,6 +425,34 @@ hi link OverLength Error
   "runtime ./colors/nord.vim
   "colorscheme nord
 "endif
+
+
+" IPython integration
+let g:ipy_completefunc='none'
+let g:ipy_monitor_subchannel = 0
+let g:jupyter_mapkeys = 0
+vmap <Leader>x <Plug>JupyterRunVisual
+nmap <C-Return> :JupyterSendCell<CR>
+nmap <Leader>x <Plug>JupyterRunTextObj
+nmap <Leader>X :JupyterSendCell<CR>
+
+" Python PEP8 checking
+nmap <leader>8 :call TogglePep8()<CR>
+
+" ncm2
+autocmd BufEnter * call ncm2#enable_for_buffer()      " enable ncm2 for all buffers
+set completeopt=noinsert,menuone,noselect             " IMPORTANT: :help Ncm2PopupOpen for more information
+let g:python3_host_prog='/usr/bin/python3'            " ncm2-jedi
+
+
+" gitgutter
+nmap <leader>g :GitGutterSignsToggle<CR>
+let g:gitgutter_async=0
+
+" nerdtree settings
+"map <C-n> :NERDTreeToggle<CR>
+"let NERDTreeIgnore = ['\.pyc$']  " ignore pyc files
+
 
 " --- FIX/IMPROVE DEFAULT BEHAVIOR ---
 
@@ -816,3 +850,18 @@ augroup mm_buf_cmds
         autocmd InsertLeave * set colorcolumn=""
     endif
 augroup EN
+
+"SCSS to CSS compiler
+augroup SCSS_compile
+    au!
+    autocmd filetype scss setlocal makeprg=my_compiler_of_choice\ -flags
+augroup END
+
+"Using Emojis as Git Gutter symbols
+let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+let g:gitgutter_sign_modified_removed = emoji#for('collision')
+
+set completefunc=emoji#complete
+
