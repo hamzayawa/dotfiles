@@ -173,7 +173,7 @@ let g:lightline = {
       \ }
 
 " Theme settings
-colorscheme spacemacs-theme                  " use vim-one colorscheme
+colorscheme nord                  " use vim-one colorscheme
 set background=dark              " [dark or light]
 set termguicolors                " fg and bg highlighting requires compatible terminal colors
 
