@@ -1,4 +1,3 @@
-
 "..............................................
 "..............................................
 "\ \ / /_ ___      ____ |_   _|__  ___| |__ ...
@@ -173,7 +172,7 @@ let g:lightline = {
       \ }
 
 " Theme settings
-colorscheme nord                  " use vim-one colorscheme
+colorscheme spacemacs-theme                  " use vim-one colorscheme
 set background=dark              " [dark or light]
 set termguicolors                " fg and bg highlighting requires compatible terminal colors
 
