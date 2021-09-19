@@ -96,10 +96,12 @@ Plugin 'gerw/vim-HiLinkTrace'
 Plugin 'kana/vim-textobj-user'
 Plugin 'wmvanvliet/python-syntax'
 Plugin 'wmvanvliet/vim-blackboard'
-Plugin 'wmvanvliet/jupyter-vim'
+" Plugin 'wmvanvliet/jupyter-vim'
 Plugin 'wmvanvliet/vim-kerbulator'
 Plugin 'Vimjas/vim-python-pep8-indent'
+Plugin 'ray-x/aurora'
 Plugin 'ervandew/supertab'
+Plugin 'nathanaelkane/vim-indent-guides'
 
 " required for vundle
 call vundle#end()
@@ -107,6 +109,8 @@ call vundle#end()
 "Airlines
 let g:airline_powerline_fonts = 1
 
+"Indentation Guide
+let g:indent_guides_enable_on_vim_startup = 1
 
 " ncm2-loom
 let g:ncm2_look_enabled = 0
@@ -427,13 +431,13 @@ hi link OverLength Error
 
 
 " IPython integration
-let g:ipy_completefunc='none'
-let g:ipy_monitor_subchannel = 0
-let g:jupyter_mapkeys = 0
-vmap <Leader>x <Plug>JupyterRunVisual
-nmap <C-Return> :JupyterSendCell<CR>
-nmap <Leader>x <Plug>JupyterRunTextObj
-nmap <Leader>X :JupyterSendCell<CR>
+" let g:ipy_completefunc='none'
+" let g:ipy_monitor_subchannel = 0
+" let g:jupyter_mapkeys = 0
+" vmap <Leader>x <Plug>JupyterRunVisual
+" nmap <C-Return> :JupyterSendCell<CR>
+" nmap <Leader>x <Plug>JupyterRunTextObj
+" nmap <Leader>X :JupyterSendCell<CR>
 
 " Python PEP8 checking
 nmap <leader>8 :call TogglePep8()<CR>
