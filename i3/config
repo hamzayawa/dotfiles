@@ -9,14 +9,14 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 # #---Basic Definitions---# #
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 1
 gaps inner 15
 gaps outer 15
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 14
+font pango:Hack Nerd Font 0
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -97,7 +97,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+m split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -192,6 +192,9 @@ bindsym $mod+b			bar mode toggle
 bindsym $mod+Shift+b		floating toggle; sticky toggle; exec --no-startup-id hover left
 
 bindsym $mod+Shift+n		floating toggle; sticky toggle; exec --no-startup-id hover right
+
+default_border pixel 0
+
 
 # #---Workspace Bindings---# #
 # bindsym $mod+Home		workspace $ws1
@@ -292,13 +295,22 @@ bindsym $mod+Shift+r restart
 #        status_command i3status
 #}
 
+# class                 border  backgr. text    indicator child_border
+client.focused          #eb407b	#eb407b #ffffff #eb407b   #eb407b
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.background       #ffffff
+
 #Display Wallpaper
 exec --no-startup-id feh --randomize --bg-scale $HOME/Pictures/*
 #exec_always feh --bg-fill $HOME/Pictures/background.jpg
 
 # Window Compositor
 
-exec --no-startup-id  picom --config ~/.config/picom/picom.conf
+#exec no-startup-id  picom --experimental-backends
 
 #Polybar Launch Script
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
