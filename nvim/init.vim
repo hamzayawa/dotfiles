@@ -29,7 +29,6 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'rakr/vim-one'                  " vim-one color theme
 Plugin 'scrooloose/nerdtree'           " side bar file tree
-Plugin 'itchyny/lightline.vim'         " minmal status bar
 Plugin 'tpope/vim-fugitive'            " allows git commands in vim session
 Plugin 'airblade/vim-gitgutter'        " shows git changes in gutter
 Plugin 'easymotion/vim-easymotion'     " go to any word quickly '\\w', '\\e', '\\b'
@@ -102,12 +101,12 @@ Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'ray-x/aurora'
 Plugin 'ervandew/supertab'
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'jupyter-vim/jupyter-vim'
+Plugin 'machakann/vim-highlightedyank'
 
 " required for vundle
 call vundle#end()
 
-"Airlines
-let g:airline_powerline_fonts = 1
 
 "Indentation Guide
 let g:indent_guides_enable_on_vim_startup = 1
@@ -119,12 +118,26 @@ let g:ncm2_look_enabled = 0
 set spelllang=en_us
 set spellfile=~/.config/nvim/en.utf-8.add
 
-" startify
-"#let g:startify_lists = [
-"#      \ { 'type': 'sessions',  'header': ['   Sessions']       },
-"#      \ { 'type': 'files',     'header': ['   Recent']            },
-"#      \ { 'type': 'commands',  'header': ['   Commands']       },
-"#      \ ]
+
+" Only show the cursor line in the active buffer.
+augroup CursorLine
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+augroup END
+
+" Mappings to make Vim more friendly towards presenting slides.
+autocmd BufNewFile,BufRead *.vpm call SetVimPresentationMode()
+function SetVimPresentationMode()
+  nnoremap <buffer> <Right> :n<CR>
+  nnoremap <buffer> <Left> :N<CR>
+
+  if !exists('#goyo')
+    Goyo
+  endif
+endfunction
+
+
 
 " markdown-preview.nvim
 let g:mkdp_auto_start = 0
@@ -163,17 +176,6 @@ let g:ale_echo_msg_format='[%linter%] %s [%severity%]: [%...code...%]'
 let g:ale_linters={'python': ['flake8'], 'r': ['lintr']}
 let g:ale_fixers={'python': ['black']}
 
-" lightline
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
 
 " Theme settings
 colorscheme aurora                  " use vim-one colorscheme
@@ -187,6 +189,7 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <leader>k <C-w>k
 nnoremap <C-l> <C-w>l
+
 " Make adjusing split sizes a bit more friendly
 noremap <silent> <C-Left> :vertical resize +3<CR>
 noremap <silent> <C-Right> :vertical resize -3<CR>
@@ -202,15 +205,6 @@ map <Leader>td :new term://bash<CR>isqlite3<CR><C-\><C-n><C-w>k
 map <Leader>tj :new term://bash<CR>ijulia<CR><C-\><C-n><C-w>k
 map <Leader>ts :new term://bash<CR>iscala<CR><C-\><C-n><C-w>k
 
-" General Settings
-"set number                      " set line numbers
-"set noswapfile                  " no swap
-"set clipboard=unnamedplus       " Copy/paste between vim and other programs. '"+y' then middlemouse
-" tabs and spaces
-"set expandtab                   " Use spaces instead of tabs.
-"set smarttab                    " Uses shiftwidth and tabstap to insert blanks when <Tab>
-"set shiftwidth=2                " One tab == four spaces.
-"set tabstop=2                   " One tab == four spaces.<Paste>
 
 " remap
 :imap ii <Esc>
@@ -415,29 +409,14 @@ hi link OverLength Error
 
 " --- UI settings ---
 
-" true color
-"if exists("&termguicolors") && exists("&winblend")
- " syntax enable
-  "set termguicolors
-  "set winblend=0
-  "set wildoptions=pum
-  "set pumblend=5
-  "set background=dark
-  " Use NeoSolarized
-  "let g:neosolarized_termtrans=1
-  "runtime ./colors/nord.vim
-  "colorscheme nord
-"endif
-
-
 " IPython integration
-" let g:ipy_completefunc='none'
-" let g:ipy_monitor_subchannel = 0
-" let g:jupyter_mapkeys = 0
-" vmap <Leader>x <Plug>JupyterRunVisual
-" nmap <C-Return> :JupyterSendCell<CR>
-" nmap <Leader>x <Plug>JupyterRunTextObj
-" nmap <Leader>X :JupyterSendCell<CR>
+let g:ipy_completefunc='none'
+let g:ipy_monitor_subchannel = 0
+let g:jupyter_mapkeys = 0
+vmap <Leader>x <Plug>JupyterRunVisual
+nmap <C-Return> :JupyterSendCell<CR>
+nmap <Leader>x <Plug>JupyterRunTextObj
+nmap <Leader>X :JupyterSendCell<CR>
 
 " Python PEP8 checking
 nmap <leader>8 :call TogglePep8()<CR>
@@ -452,10 +431,6 @@ let g:python3_host_prog='/usr/bin/python3'            " ncm2-jedi
 nmap <leader>g :GitGutterSignsToggle<CR>
 let g:gitgutter_async=0
 
-" nerdtree settings
-"map <C-n> :NERDTreeToggle<CR>
-"let NERDTreeIgnore = ['\.pyc$']  " ignore pyc files
-
 
 " --- FIX/IMPROVE DEFAULT BEHAVIOR ---
 
@@ -465,12 +440,6 @@ command! Wq wq
 command! Bd bd
 
 " -------------------------------------------------------------
-"Shutcut split Navigation
-
-" map <C-h> <C-w>h
-" map <C-j> <C-w>j
-" map <C-k> <C-w>k
-"map <C-l> <C-w>l
 
 "map <Space> :EditVifm .<CR>
 map <ENTER> :Goyo<CR>
@@ -612,19 +581,6 @@ let g:EasyMotion_leader_key = '<Leader>m'
 let g:EasyMotion_mapping_f = '<leader>f'
 let g:EasyMotion_mapping_F = '<leader>F'
 
-" let g:lightline = {
-"       \ 'colorscheme': 'PaperColor',
-"       \ 'active': {
-"       \   'left': [ [ 'mode', 'paste' ],
-"       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-"       \ },
-"       \ 'component_function': {
-"       \   'gitbranch': 'FugitiveHead'
-"       \ },
-"       \ }
-
-
-"colorscheme nord
 
 " Set this variable to 1 to fix files when you save them.
 let g:ale_fix_on_save = 1
