@@ -5,15 +5,14 @@ on:
 
 jobs:
   build:
-    
     runs-on: ubuntu-latest
 
   steps:
-    uses: actions/checkout@v2
     - name: Run a one-line script
-    - runs: echo Assalamu Aliakum
+      uses: actions/checkout@v3
+      run: echo Assalamu Aliakum
 
     - name: Run a multi-line script
-    - runs: |
+      run: |
         echo Hello,
         echo world!
