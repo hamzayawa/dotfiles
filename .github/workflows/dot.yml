@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  - push
+
+jobs:
+  build:
+    
+    runs-on: ubuntu-latest
+
+  steps:
+    - uses: actions/checkout@v3
+    - name: Run a one-line script
+    - runs: echo Assalamu Aliakum
+
+    - name: Run a multi-line script
+    - runs: |
+        echo Hello,
+        echo world!
