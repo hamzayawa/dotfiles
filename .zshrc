@@ -5,7 +5,9 @@
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$HOME:$PATH
 export PATH=$HOME/.local/bin:$PATH
+export PATH="$PATH:/usr/local/bin"
 export FORMAT="ID\t{{.ID}}\nNAME\t{{.Names}}\nIMAGE\t{{.Image}}\nPORTS\t{{.Ports}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.CreatedAt}}\nSTATUS\t{{.Status}}\n"
+export PATH="$PATH:/opt/nvim-linux64/bin"
 
 ZSH_THEME="robbyrussell"
 
@@ -20,28 +22,20 @@ export LC_ALL=en_US.UTF-8
 PROMPT="${PROMPT/➜ /❯ }"
 
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 # Example aliases
-alias l="lsd -l"
-alias la='lsd -a'
-alias lla='lsd -la'
-alias lt='lsd --tree'
-alias cat="batcat"
-alias ex="exa -l -g --icons"
-alias exa="exa -lga --icons"
+alias ls='eza --icons --group-directories-first'
+alias ll='eza -lh --icons --group-directories-first'
+alias la='eza -lha --icons --group-directories-first'
+alias lt='eza --tree --level=2 --icons'
+
+# alias l="lsd -l"
+# alias la='lsd -a'
+# alias lla='lsd -la'
+# alias lt='lsd --tree'
+# alias cat="batcat"
+# alias ex="exa -l -g --icons"
+# alias exa="exa -lga --icons"
 alias v="nvim"
 alias ga="git add"
 alias gc="git commit -m"
@@ -62,3 +56,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 nvm use default &> /dev/null
+
+eval "$(zoxide init zsh)"
